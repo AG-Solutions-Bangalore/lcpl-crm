@@ -58,7 +58,7 @@ const SideNav = ({ openSideNav, setOpenSideNav }) => {
       <div className={`relative`}>
         <Link to="/cylinder" className="flex items-center justify-center p-4">
           <div className="flex items-center bg-gradient-to-br from-blue-300 to-blue-900 rounded-lg">
-            <img src="/rkcyllogo.png" alt="Logo" className="h-12 w-auto" />
+            <img src="/lcpllogo.png" alt="Logo" className="h-12 w-auto" />
           </div>
         </Link>
         <IconButton
@@ -156,55 +156,53 @@ const SideNav = ({ openSideNav, setOpenSideNav }) => {
             </NavLink>
           </li>
           <hr />
-            {branchId == "2" ? "" :
-            
+          {branchId == "2" ? (
+            ""
+          ) : (
             <>
-             <li>
-            <NavLink to="/vendor-report">
-              {({ isActive }) => (
-                <Button
-                  variant={isActive ? "gradient" : "text"}
-                  color="white"
-                  className="flex items-center gap-4 px-4 capitalize"
-                  fullWidth
-                >
-                  <TbReportAnalytics className="w-5 h-5 text-inherit" />
-                  <Typography
-                    color="inherit"
-                    className="font-medium capitalize"
-                  >
-                    Vendor Report
-                  </Typography>
-                </Button>
-              )}
-            </NavLink>
-          </li>
-          
-          <li>
-            <NavLink to="/manufacturer-report">
-              {({ isActive }) => (
-                <Button
-                  variant={isActive ? "gradient" : "text"}
-                  color="white"
-                  className="flex items-center gap-4 px-4 capitalize"
-                  fullWidth
-                >
-                  <TbReport className="w-5 h-5 text-inherit" />
-                  <Typography
-                    color="inherit"
-                    className="font-medium capitalize"
-                  >
-                    Manufacturer Report
-                  </Typography>
-                </Button>
-              )}
-            </NavLink>
-          </li>
+              <li>
+                <NavLink to="/vendor-report">
+                  {({ isActive }) => (
+                    <Button
+                      variant={isActive ? "gradient" : "text"}
+                      color="white"
+                      className="flex items-center gap-4 px-4 capitalize"
+                      fullWidth
+                    >
+                      <TbReportAnalytics className="w-5 h-5 text-inherit" />
+                      <Typography
+                        color="inherit"
+                        className="font-medium capitalize"
+                      >
+                        Vendor Report
+                      </Typography>
+                    </Button>
+                  )}
+                </NavLink>
+              </li>
+
+              <li>
+                <NavLink to="/manufacturer-report">
+                  {({ isActive }) => (
+                    <Button
+                      variant={isActive ? "gradient" : "text"}
+                      color="white"
+                      className="flex items-center gap-4 px-4 capitalize"
+                      fullWidth
+                    >
+                      <TbReport className="w-5 h-5 text-inherit" />
+                      <Typography
+                        color="inherit"
+                        className="font-medium capitalize"
+                      >
+                        Manufacturer Report
+                      </Typography>
+                    </Button>
+                  )}
+                </NavLink>
+              </li>
             </>
-            }
-
-         
-
+          )}
 
           <li>
             <NavLink to="/cylinder-details">
@@ -227,37 +225,37 @@ const SideNav = ({ openSideNav, setOpenSideNav }) => {
             </NavLink>
           </li>
 
-          {branchId == "2" ? "" :
-            
+          {branchId == "2" ? (
+            ""
+          ) : (
             <>
-            <li>
-            <NavLink to="/report-form">
-              {({ isActive }) => (
-                <Button
-                  variant={isActive ? "gradient" : "text"}
-                  color="white"
-                  className="flex items-center gap-4 px-4 capitalize"
-                  fullWidth
-                >
-                  <TbReportSearch className="w-5 h-5 text-inherit" />
-                  <Typography
-                    color="inherit"
-                    className="font-medium capitalize"
-                  >
-                    Report
-                  </Typography>
-                </Button>
-              )}
-            </NavLink>
-          </li>
-            </>}
-          
+              <li>
+                <NavLink to="/report-form">
+                  {({ isActive }) => (
+                    <Button
+                      variant={isActive ? "gradient" : "text"}
+                      color="white"
+                      className="flex items-center gap-4 px-4 capitalize"
+                      fullWidth
+                    >
+                      <TbReportSearch className="w-5 h-5 text-inherit" />
+                      <Typography
+                        color="inherit"
+                        className="font-medium capitalize"
+                      >
+                        Report
+                      </Typography>
+                    </Button>
+                  )}
+                </NavLink>
+              </li>
+            </>
+          )}
 
-          {/* Add more hardcoded routes here as needed */}
         </ul>
       </div>
-      <div className=" fixed bottom-5 left-1/4 font-bold text-black border-b border-dashed border-black   flex items-center ">
-    Updated On : 11-Apr-2025
+      <div className="absolute bottom-5 left-1/2 transform -translate-x-1/2 font-bold text-black border-b border-dashed border-black px-4 py-1">
+        Updated On : 17-Apr-2025
       </div>
     </aside>
   );

@@ -93,12 +93,11 @@ const SignIn = () => {
           <div className="md:w-1/2 px-8 md:px-16">
             {/* Logo Image */}
             <div className="flex justify-center mb-4">
-              {/* <img
-                src="/rkcyllogo.png"
-                alt="RK Cylinder Logo"
+              <img
+                src="/lcpllogo.png"
+                alt="LCPL Logo"
                 className="h-14 w-auto rounded-lg  "
-              /> */}
-              <h1 className="text-4xl font-bold text-red-800">LCPL</h1>
+              />
             </div>
             <h2 className="font-bold text-2xl text-[#002D74]">Login</h2>
             <p className="text-xs mt-4 text-[#002D74]">

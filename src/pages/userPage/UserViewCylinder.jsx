@@ -80,7 +80,6 @@ const UserViewCylinder = () => {
           },
         }
       );
-     
 
       if (response.data.cylinderSub.length === 0) {
         setMessage("No cylinders found for the given ID.");
@@ -133,7 +132,11 @@ const UserViewCylinder = () => {
 
   const checkBarcode = async (value) => {
     const barcodeId = value;
-    if (barcodeId.length === 6 || barcodeId.length === 5 || barcodeId.length === 4) {
+    if (
+      barcodeId.length === 6 ||
+      barcodeId.length === 5 ||
+      barcodeId.length === 4
+    ) {
       const token = localStorage.getItem("token");
       const response = await axios.get(
         `${BASE_URL}/api/web-fetch-cylinder-by-scan/${barcodeId}`,
@@ -152,7 +155,7 @@ const UserViewCylinder = () => {
       }
       testRef.current.focus();
       setLatestid("");
-    }else{
+    } else {
       setMessage("Barcode Length must be 4 to 6");
     }
     // } else if (barcodeId.length === 0) {
@@ -197,14 +200,14 @@ const UserViewCylinder = () => {
                   autoFocus
                   inputRef={testRef}
                   required
-                  label="R K Serial No"
+                  label="LCPL Serial No"
                   name="cylinder_batch_nos"
                   value={latestid}
                   // onChange={(e) => {
                   //   setLatestid(e.target.value);
                   //   checkBarcode(e.target.value);
                   // }}
-                  
+
                   onKeyDown={handleKeyDown}
                   onChange={(e) => {
                     setLatestid(e.target.value);
@@ -273,7 +276,9 @@ const UserViewCylinder = () => {
                       <table className="w-full border border-gray-300 mb-4">
                         <tbody>
                           <tr className="border-b border-gray-200">
-                            <td className="p-2 font-semibold">RK Serial No</td>
+                            <td className="p-2 font-semibold">
+                              LCPL Serial No
+                            </td>
                             <td className="p-2">:</td>
                             <td className="p-2 font-semibold">
                               {cylinder.cylinder_sub_barcode}
@@ -303,7 +308,7 @@ const UserViewCylinder = () => {
                             <td className="p-2 font-semibold">
                               {cylinder.manufacturer_name}
                             </td>
-                            <td className="p-2 font-semibold">R K Batch No</td>
+                            <td className="p-2 font-semibold">LCPL Batch No</td>
                             <td className="p-2">:</td>
                             <td className="p-2 font-semibold">
                               {cylinder.cylinder_batch_nos}

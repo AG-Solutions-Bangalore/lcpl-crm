@@ -1,7 +1,7 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import BASE_URL from "../base/BaseUrl";
 import axios from "axios";
+import BASE_URL from "../base/BaseUrl";
 
 export const ContextPanel = createContext();
 
@@ -11,25 +11,24 @@ const AppProvider = ({ children }) => {
     branchId: null,
     userTypeId: null,
   });
-
   const [error, setError] = useState(false);
+
   const navigate = useNavigate();
   const location = useLocation();
+  const hasRedirected = useRef(false);
 
+  // ✅ Check panel status
   const checkPanelStatus = async () => {
     try {
-      const response = await axios.get(`${BASE_URL}/api/web-check-status`);
-      const datas = await response.data;
-      setIsPanelUp(datas);
-      if (datas?.success) {
-        setError(false);
-      } else {
-        setError(true);
-      }
-    } catch (error) {
+      const { data } = await axios.get(`${BASE_URL}/api/web-check-status`);
+      setIsPanelUp(data);
+      setError(!data?.success);
+    } catch {
       setError(true);
     }
   };
+
+  // ✅ Load user info on mount
   useEffect(() => {
     const token = localStorage.getItem("token");
     const branchId = localStorage.getItem("branchId");
@@ -40,83 +39,92 @@ const AppProvider = ({ children }) => {
         branchId: Number(branchId),
         userTypeId: Number(userTypeId),
       });
-    } else {
-      navigate("/");
     }
-  }, [navigate]);
+  }, []);
 
+  // ✅ Set interval to check panel status
   useEffect(() => {
     checkPanelStatus();
     const intervalId = setInterval(checkPanelStatus, 300000);
     return () => clearInterval(intervalId);
   }, []);
 
+  // ✅ Handle routing based on panel status, token, and path
   useEffect(() => {
+    if (hasRedirected.current) return;
+
     const token = localStorage.getItem("token");
     const currentPath = location.pathname;
 
     if (error) {
       localStorage.clear();
+      hasRedirected.current = true;
       navigate("/maintenance");
-    } else if (isPanelUp?.success) {
-      if (token) {
-        const allowedPaths = [
-          "/profile",
-          "/change-password",
-          "/vendor",
-          "/add-vendor",
-          "/vendor-edit",
-          "/manufacturer",
-          "/cylinder",
-          "/add-cylinder",
-          "/add-sub-cylinder",
-          "/cylinder-view",
-          "/cylinder-edit",
-          "/add-manufacturer",
-          "/manufacturer-edit",
-          "/vendor-report",
-          "/manufacturer-report",
-          "/report-form",
-          "/report-one",
-          "/report-two",
-          "/cylinder-details",
-          "/report-cylinder",
-          "/view-cylinder",
-          "/user-view-cylinder",
-        ];
-        const isAllowedPath = allowedPaths.some((path) =>
-          currentPath.startsWith(path)
-        );
-        if (isAllowedPath) {
-          navigate(currentPath);
-        } else {
-          if (
-            (userInfo.branchId === 1 || userInfo.branchId === 2) &&
-            userInfo.userTypeId === 1
-          ) {
-            navigate("/user-view-cylinder");
-          } else if (
-            (userInfo.branchId === 1 || userInfo.branchId === 2) &&
-            userInfo.userTypeId === 2
-          ) {
-            navigate("/cylinder");
-          } else {
-            navigate("/");
-          }
-        }
-      } else {
-        if (
-          currentPath === "/" ||
-          currentPath === "/register" ||
-          currentPath === "/forget-password"
-        ) {
-          navigate(currentPath);
-        } else {
-          navigate("/"); // Redirect to login if no token
-        }
-      }
+      return;
     }
-  }, [error, navigate, isPanelUp, location.pathname, userInfo]);
+
+    if (!isPanelUp?.success) return;
+
+    const allowedPaths = [
+      "/profile",
+      "/change-password",
+      "/vendor",
+      "/add-vendor",
+      "/vendor-edit",
+      "/manufacturer",
+      "/cylinder",
+      "/add-cylinder",
+      "/add-sub-cylinder",
+      "/cylinder-view",
+      "/cylinder-edit",
+      "/add-manufacturer",
+      "/manufacturer-edit",
+      "/vendor-report",
+      "/manufacturer-report",
+      "/report-form",
+      "/report-one",
+      "/report-two",
+      "/cylinder-details",
+      "/report-cylinder",
+      "/view-cylinder",
+      "/user-view-cylinder",
+    ];
+
+    const isPublicPath = ["/", "/register", "/forget-password"].includes(
+      currentPath
+    );
+    const isAllowedPath = allowedPaths.some((path) =>
+      currentPath.startsWith(path)
+    );
+
+    if (!token) {
+      if (!isPublicPath) {
+        hasRedirected.current = true;
+        navigate("/"); 
+      }
+      return;
+    }
+
+    // User is logged in
+    if (isAllowedPath) return;
+
+    if (
+      (userInfo.branchId === 1 || userInfo.branchId === 2) &&
+      userInfo.userTypeId === 1
+    ) {
+      hasRedirected.current = true;
+      navigate("/user-view-cylinder");
+    } else if (
+      (userInfo.branchId === 1 || userInfo.branchId === 2) &&
+      userInfo.userTypeId === 2
+    ) {
+      hasRedirected.current = true;
+      navigate("/cylinder");
+    } else {
+      hasRedirected.current = true;
+      navigate("/");
+    }
+  }, [error, isPanelUp, location.pathname, userInfo, navigate]);
 
   return (
     <ContextPanel.Provider

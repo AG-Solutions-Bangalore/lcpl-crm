@@ -82,7 +82,7 @@ const Cylinder = () => {
     },
     {
       name: "cylinder_batch_nos",
-      label: "R K Batch no",
+      label: "LCPL Batch no",
       options: {
         filter: true,
         sort: false,
