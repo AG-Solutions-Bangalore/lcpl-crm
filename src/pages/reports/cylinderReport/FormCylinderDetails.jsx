@@ -178,7 +178,7 @@ const FormCylinderDetails = () => {
                 <div className="form-group">
                   <TextField
                     fullWidth
-                    label="R K Batch No"
+                    label="LCPL Batch No"
                     autoComplete="off"
                     name="cylinder_sub_barcode"
                     value={cylinderDownload.cylinder_sub_barcode}

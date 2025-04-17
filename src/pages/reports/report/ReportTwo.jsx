@@ -78,7 +78,7 @@ const ReportTwo = () => {
   const columns = [
     {
       name: "cylinder_sub_barcode",
-      label: "R K Serial No",
+      label: "LCPL Serial No",
       options: {
         filter: true,
         sort: true,

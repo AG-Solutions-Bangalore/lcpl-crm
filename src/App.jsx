@@ -1,33 +1,18 @@
 import { Route, Routes } from "react-router-dom";
 import SignIn from "./pages/auth/SignIn";
-// import SIgnUp from "./pages/auth/SIgnUp";
-import Maintenance from "./pages/maintenance/Maintenance";
 import ProtectedRoute from "./components/ProtectedRoute";
-// import ForgetPassword from "./pages/auth/ForgetPassword";
-// import ChangePassword from "./pages/profile/ChangePassword";
-// import Vendor from "./pages/master/vendor/Vendor";
-// import Manufacturer from "./pages/master/manufacturer/Manufacturer";
-// import Cylinder from "./pages/cylinder/Cylinder";
-// import AddManufacturer from "./pages/master/manufacturer/AddManufacturer";
-// import AddVendor from "./pages/master/vendor/AddVendor";
-// import AddCylinder from "./pages/cylinder/AddCylinder";
+import Maintenance from "./pages/maintenance/Maintenance";
 import EditManufacturer from "./pages/master/manufacturer/EditManufacturer";
 import EditVendor from "./pages/master/vendor/EditVendor";
-// import AddCylinderSub from "./pages/cylinder/AddCylinderSub";
-// import CylView from "./pages/cylinder/CylView";
 import CylinderEdit from "./pages/cylinder/CylinderEdit";
-// import ViewCylinder from "./pages/ViewCylinder/ViewCylinder";
-// import UserViewCylinder from "./pages/userPage/UserViewCylinder";
 import { lazy, Suspense, useContext, useEffect, useState } from "react";
 import { ContextPanel } from "./utils/ContextPanel";
-// import ReportVendor from "./pages/reports/vendor/ReportVendor";
-// import ReportManufacturer from "./pages/reports/manufacturer/ReportManufacturer";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import Loader from "./components/Loader";
 import ReportForm from "./pages/reports/report/ReportForm";
 import ReportOne from "./pages/reports/report/ReportOne";
 import ReportTwo from "./pages/reports/report/ReportTwo";
-import Loader from "./components/Loader";
-// import FormCylinderDetails from "./pages/reports/cylinderReport/FormCylinderDetails";
-// import ReportCylinderDetails from "./pages/reports/cylinderReport/ReportCylinderDetails";
 
 // lazy
 const SIgnUp = lazy(() => import("./pages/auth/SIgnUp"));
@@ -59,8 +44,6 @@ const FormCylinderDetails = lazy(() =>
 const ReportCylinderDetails = lazy(() =>
   import("./pages/reports/cylinderReport/ReportCylinderDetails")
 );
-import { ToastContainer } from 'react-toastify';
-  import 'react-toastify/dist/ReactToastify.css';
 const App = () => {
   const { userInfo, setUserInfo } = useContext(ContextPanel);
   const [isLoading, setIsLoading] = useState(true);

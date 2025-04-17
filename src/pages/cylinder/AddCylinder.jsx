@@ -176,7 +176,7 @@ const AddCylinder = () => {
                     <TextField
                       fullWidth
                       required
-                      label="R K Batch No"
+                      label="LCPL Batch No"
                       name="cylinder_batch_nos"
                       value={batchid}
                       onChange={(e) => setBatchid(e.target.value)}

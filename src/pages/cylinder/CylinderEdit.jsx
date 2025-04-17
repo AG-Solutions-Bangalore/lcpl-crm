@@ -293,7 +293,7 @@ const CylinderEdit = () => {
           {/* Fields for sub-cylinder */}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-4">
             <TextField
-              label="R K Serial No"
+              label="LCPL Serial No"
               inputProps={{
                 maxLength: 6,
                 minLength: 6,

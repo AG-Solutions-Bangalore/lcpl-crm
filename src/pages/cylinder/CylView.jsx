@@ -77,16 +77,12 @@ const CylView = () => {
     };
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.post(
-        url,
-        data,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          responseType: "blob",
-        }
-      );
+      const res = await axios.post(url, data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        responseType: "blob",
+      });
 
       const downloadUrl = window.URL.createObjectURL(new Blob([res.data]));
       const link = document.createElement("a");
@@ -105,18 +101,19 @@ const CylView = () => {
 
   const handlePrint = (e) => {
     e.preventDefault();
-    downloadReport(`${BASE_URL}/api/download-cylinder-details-report-in-view`, "subcylinderview.csv");
+    downloadReport(
+      `${BASE_URL}/api/download-cylinder-details-report-in-view`,
+      "subcylinderview.csv"
+    );
     toast.success("Download SubCylinder view");
   };
-
-  
 
   const columns = [
     ...(branchId === 1
       ? [
           {
             name: "cylinder_sub_barcode",
-            label: "R K Serial No",
+            label: "LCPL Serial No",
             options: {
               filter: true,
               sort: false,
@@ -149,15 +146,15 @@ const CylView = () => {
         sort: false,
         customBodyRender: (value, tableMeta) => {
           let cylinder_sub_manufacturer_month;
-      let cylinder_sub_manufacturer_year;
+          let cylinder_sub_manufacturer_year;
 
-      if (branchId === 1) {
-        cylinder_sub_manufacturer_month = tableMeta.rowData[3];
-        cylinder_sub_manufacturer_year = tableMeta.rowData[4];
-      } else {
-        cylinder_sub_manufacturer_month = tableMeta.rowData[2];
-        cylinder_sub_manufacturer_year = tableMeta.rowData[3];
-      }
+          if (branchId === 1) {
+            cylinder_sub_manufacturer_month = tableMeta.rowData[3];
+            cylinder_sub_manufacturer_year = tableMeta.rowData[4];
+          } else {
+            cylinder_sub_manufacturer_month = tableMeta.rowData[2];
+            cylinder_sub_manufacturer_year = tableMeta.rowData[3];
+          }
           return `${cylinder_sub_manufacturer_month}/${cylinder_sub_manufacturer_year}`;
         },
       },
@@ -222,12 +219,14 @@ const CylView = () => {
     <Layout>
       <div className="p-4 sm:p-6">
         <div className="mb-6 flex  items-center justify-between gap-4">
-       
-          <h3 className="text-xl border-b-2 border-dashed border-blue-900 sm:text-2xl font-bold">View Cylinder</h3>
+          <h3 className="text-xl border-b-2 border-dashed border-blue-900 sm:text-2xl font-bold">
+            View Cylinder
+          </h3>
           <Link to="/cylinder">
-                <button className="w-20 h-10  border border-red-500 hover:border-blue-500 bg-blue-400 hover:bg-red-100  p-1 rounded-lg text-white hover:text-red-700" >Go Back</button>
-              </Link>
-          
+            <button className="w-20 h-10  border border-red-500 hover:border-blue-500 bg-blue-400 hover:bg-red-100  p-1 rounded-lg text-white hover:text-red-700">
+              Go Back
+            </button>
+          </Link>
         </div>
         <div className="bg-white p-4 sm:p-6 shadow rounded-md">
           <div className=" flex  flex-col items-center md:flex-row lg:flex-row xl:flex-row justify-around gap-4 mb-4">
@@ -238,7 +237,7 @@ const CylView = () => {
               </span>
             </div>
             <div className="flex items-center">
-              <label className="font-bold">R K Batch No: </label>
+              <label className="font-bold">LCPL Batch No: </label>
               <span className="ml-2">{cylinders.cylinder_batch_nos}</span>
             </div>
             <div className="flex items-center">
