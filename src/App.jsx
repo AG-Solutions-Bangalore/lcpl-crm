@@ -83,7 +83,7 @@ const App = () => {
         position="top-right"
         reverseOrder={false}
       />
-      {/* <DisableRightClick /> */}
+      <DisableRightClick />
       <Routes>
         <Route path="/" element={<SignIn />} />
         <Route
