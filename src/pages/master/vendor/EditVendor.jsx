@@ -96,11 +96,12 @@ const EditVendor = () => {
           },
         }
       );
+
       if (response.data.code == "200") {
-        toast.success("Vendor Update Succesfully");
+        toast.success(response.data.msg || "Updated Sucessfully");
         navigate("/vendor");
       } else {
-        toast.error("error");
+        toast.error(response.data.msg || "Error Occurs");
       }
     } catch (error) {
       console.error("Error creating maufacturer", error);

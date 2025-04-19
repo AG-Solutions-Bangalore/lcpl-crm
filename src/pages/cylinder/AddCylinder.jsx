@@ -22,6 +22,10 @@ const AddCylinder = () => {
     cylinder_batch_nos: "",
     cylinder_vendor_id: "",
     cylinder_count: "0",
+    cylinder_qnty: "",
+    cylinder_size: "",
+    cylinder_serial_from_no: "",
+    cylinder_serial_to_no: "",
   });
   const [loading, setLoading] = useState(false);
   const { isPanelUp } = useContext(ContextPanel);
@@ -59,6 +63,13 @@ const AddCylinder = () => {
     fetchVendor();
     setLoading(false);
   }, []);
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+
+    if (/^\d*$/.test(value)) {
+      setCylinder((prev) => ({ ...prev, [name]: value }));
+    }
+  };
 
   useEffect(() => {
     const fetchBatch = async () => {
@@ -107,6 +118,11 @@ const AddCylinder = () => {
         cylinder_vendor_id: cylinder.cylinder_vendor_id,
         cylinder_count: "0",
         cylinder_batch_nos: batchid,
+
+        cylinder_qnty: cylinder.cylinder_qnty,
+        cylinder_size: cylinder.cylinder_size,
+        cylinder_serial_from_no: cylinder.cylinder_serial_from_no,
+        cylinder_serial_to_no: cylinder.cylinder_serial_to_no,
       };
       const token = localStorage.getItem("token");
       const response = await axios.post(
@@ -200,6 +216,52 @@ const AddCylinder = () => {
                         </MenuItem>
                       ))}
                     </TextField>
+                  </div>
+                </div>
+                <div>
+                  <div className="mb-4">
+                    <TextField
+                      fullWidth
+                      label="Cylinder Qty"
+                      name="cylinder_qnty"
+                      value={cylinder.cylinder_qnty}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <div className="mb-4">
+                    <TextField
+                      fullWidth
+                      label="Cylinder Size"
+                      name="cylinder_size"
+                      value={cylinder.cylinder_size}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <div className="mb-4">
+                    <TextField
+                      fullWidth
+                      label="Serial No From"
+                      name="cylinder_serial_from_no"
+                      value={cylinder.cylinder_serial_from_no}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                </div>
+                <div>
+                  <div className="mb-4">
+                    <TextField
+                      fullWidth
+                      label="Serial No To"
+                      name="cylinder_serial_to_no"
+                      value={cylinder.cylinder_serial_to_no}
+                      onChange={handleInputChange}
+                    />
                   </div>
                 </div>
               </div>

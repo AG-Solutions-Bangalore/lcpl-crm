@@ -369,7 +369,7 @@ const AddCylinderSub = () => {
     menu: (provided) => ({
       ...provided,
       fontSize: "1rem",
-      zIndex:10
+      zIndex: 10,
     }),
   };
   return (
@@ -399,36 +399,34 @@ const AddCylinderSub = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               {/* serial no  */}
 
-              {branchId === "1" && userTypeId === "2" && (
-                <>
-                  <div className=" flex mb-4">
-                    {branchId === "1" ? (
-                      <IoIosQrScanner
-                        className="mdi mdi-barcode-scan w-6 hover:text-red-500 h-12 mdi-48px menu-icon"
-                        style={{ cursor: "pointer", marginRight: "1rem" }}
-                        onClick={openmodal}
-                      ></IoIosQrScanner>
-                    ) : (
-                      ""
-                    )}
-                    <TextField
-                      id="select-corrpreffer"
-                      required
-                      label="LCPL Serial No"
-                      inputProps={{
-                        maxLength: 6,
-                        minLength: 4,
-                        pattern: "[0-9]{4,6}",
-                      }}
-                      onKeyDown={handleKeyDown}
-                      name="cylinder_sub_barcode"
-                      value={cylinder.cylinder_sub_barcode}
-                      onChange={onInputChange}
-                      fullWidth
-                    />
-                  </div>
-                </>
-              )}
+              <>
+                <div className=" flex mb-4">
+                  {branchId === "1" ? (
+                    <IoIosQrScanner
+                      className="mdi mdi-barcode-scan w-6 hover:text-red-500 h-12 mdi-48px menu-icon"
+                      style={{ cursor: "pointer", marginRight: "1rem" }}
+                      onClick={openmodal}
+                    ></IoIosQrScanner>
+                  ) : (
+                    ""
+                  )}
+                  <TextField
+                    id="select-corrpreffer"
+                    required
+                    label="LCPL Serial No"
+                    inputProps={{
+                      maxLength: 6,
+                      minLength: 4,
+                      pattern: "[0-9]{4,6}",
+                    }}
+                    onKeyDown={handleKeyDown}
+                    name="cylinder_sub_barcode"
+                    value={cylinder.cylinder_sub_barcode}
+                    onChange={onInputChange}
+                    fullWidth
+                  />
+                </div>
+              </>
 
               <div className="mb-4">
                 <TextField
@@ -464,46 +462,6 @@ const AddCylinderSub = () => {
                         styles={customStyles}
                         required
                       />
-                      {/* <div>
-                       
-                      <Select
-                          name="cylinder_sub_manufacturer_id"
-                          options={manufacturer.map((option) => ({
-                            value: option.manufacturer_name,
-                            label: option.manufacturer_name,
-                            name: "cylinder_sub_manufacturer_id",
-                          }))}
-                          onChange={(e) => onInputChange(e)}
-                          value={
-                            cylinder.cylinder_sub_manufacturer_id
-                              ? {
-                                  value: cylinder.cylinder_sub_manufacturer_id,
-                                  label: cylinder.cylinder_sub_manufacturer_id,
-                                }
-                              : null
-                          }
-                          placeholder="Select Manufacturer"
-                          styles={customStyles}
-                          isSearchable={true}
-                        />
-                      </div> */}
-                      {/* <TextField
-                    id="select-corrpreffer"
-                    required
-                    SelectProps={{ MenuProps: {} }}
-                    select
-                    label="Manufacturer"
-                    name="cylinder_sub_manufacturer_id"
-                    value={cylinder.cylinder_sub_manufacturer_id}
-                    onChange={onInputChange}
-                    fullWidth
-                  >
-                    {manufacturer.map((c_manufacturer, key) => (
-                      <MenuItem key={key} value={c_manufacturer.id}>
-                        {c_manufacturer.manufacturer_name}
-                      </MenuItem>
-                    ))}
-                  </TextField> */}
                     </>
                   )}
                 {(cylinder.cylinder_sub_manufacturer_id == "1" ||
@@ -556,7 +514,6 @@ const AddCylinderSub = () => {
                   id="select-corrpreffer"
                   required
                   label="Batch No"
-                  // onKeyDown={handleKeyDown}
                   name="cylinder_sub_batch_no"
                   value={cylinder.cylinder_sub_batch_no}
                   onChange={onInputChange}
@@ -576,37 +533,12 @@ const AddCylinderSub = () => {
                   fullWidth
                 />
               </div>
-              {/* from here it is only for branch 2  */}
               {branchId === "2" && userTypeId === "2" && (
                 <>
-                  {/* <div className="mb-4">
-                    <TextField
-                      id="select-corrpreffer"
-                      required
-                      label="Previous Test Date"
-                      name="cylinder_sub_previous_test_date"
-                      inputProps={{ maxLength: 5 }}
-                      value={cylinder.cylinder_sub_previous_test_date}
-                      onChange={onInputChange}
-                      fullWidth
-                    />
-                  </div>
                   <div className="mb-4">
                     <TextField
                       id="select-corrpreffer"
-                      required
-                      label="Next Test Date"
-                      name="cylinder_sub_n_t_d"
-                      inputProps={{ maxLength: 5 }}
-                      value={cylinder.cylinder_sub_n_t_d}
-                      onChange={onInputChange}
-                      fullWidth
-                    />
-                  </div> */}
-                  <div className="mb-4">
-                    <TextField
-                      id="select-corrpreffer"
-                      required
+                      // required
                       label="New Tare Weight(Kg)"
                       name="cylinder_sub_n_weight"
                       inputProps={{ maxLength: 5 }}

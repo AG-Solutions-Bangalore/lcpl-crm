@@ -88,6 +88,7 @@ const AppProvider = ({ children }) => {
       "/report-cylinder",
       "/view-cylinder",
       "/user-view-cylinder",
+      "/view-tara-weight",
     ];
 
     const isPublicPath = ["/", "/register", "/forget-password"].includes(
@@ -100,7 +101,7 @@ const AppProvider = ({ children }) => {
     if (!token) {
       if (!isPublicPath) {
         hasRedirected.current = true;
-        navigate("/"); 
+        navigate("/");
       }
       return;
     }

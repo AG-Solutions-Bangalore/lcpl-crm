@@ -11,20 +11,34 @@ import BASE_URL from "../../base/BaseUrl";
 import { Dialog, DialogBody, DialogFooter } from "@material-tailwind/react";
 import ScannerModel from "../../components/ScannerModel";
 import { QrCodeIcon } from "lucide-react";
+import toast, { Toaster } from "react-hot-toast";
 
-const ViewCylinder = () => {
+const ViewTaraWeight = () => {
   const [latestid, setLatestid] = useState("");
+  const [latestidone, setLatestidone] = useState("");
   const [cylinders, setCylinders] = useState([]);
+  const [subWeightData, setSubWeightData] = useState({
+    cylinder_sub_weight: "",
+    cylinder_sub_n_weight: "",
+  });
+
   const [message, setMessage] = useState("");
   const testRef = useRef(null);
   const componentRef = useRef(null);
+  const [loadingtara, setLoadingTara] = useState(false);
   const [loading, setLoading] = useState(false);
   const { isPanelUp } = useContext(ContextPanel);
   const navigate = useNavigate();
   const [showmodal, setShowmodal] = useState(false);
   const [id, setId] = useState();
   const branchId = Number(localStorage.getItem("branchId"));
-
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setSubWeightData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
   const closegroupModal = () => {
     console.log("Closing modal");
     setShowmodal(false);
@@ -88,13 +102,40 @@ const ViewCylinder = () => {
         setCylinders(response.data.cylinderSub);
         setMessage("");
       }
-      testRef.current.focus();
+    //   testRef.current.focus();
       setLatestid("");
     } catch (error) {
       console.error("Error fetching viewcylinder data", error);
       setMessage("Error fetching cylinder data.");
     } finally {
       setLoading(false);
+    }
+  };
+  const onSubmit1 = async () => {
+    try {
+      setLoadingTara(true);
+      const token = localStorage.getItem("token");
+
+      const response = await axios.put(
+        `${BASE_URL}/api/web-update-cylinder-tareweight/${latestidone}`,
+        subWeightData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (response.data.code == "200") {
+        toast.success(response.data.msg || "Updated Sucessfully");
+        setMessage("");
+      } else {
+        toast.error(response.data.msg || "Error Occurs");
+      }
+    } catch (error) {
+      console.error("Error fetching viewcylinder data", error);
+      //   setMessage("Error fetching cylinder data.");
+    } finally {
+      setLoadingTara(false);
     }
   };
 
@@ -118,10 +159,15 @@ const ViewCylinder = () => {
         setMessage("No cylinders found for the given ID.");
         setCylinders([]);
       } else {
+        const data = response.data.cylinderSub[0];
         setCylinders(response.data.cylinderSub);
+        setSubWeightData({
+          cylinder_sub_weight: data.cylinder_sub_weight,
+          cylinder_sub_n_weight: data.cylinder_sub_n_weight,
+        });
         setMessage("");
       }
-      testRef.current.focus();
+    //   testRef.current.focus();
       setLatestid("");
     } else {
       setMessage("Barcode Length must be 4 to 6");
@@ -130,8 +176,24 @@ const ViewCylinder = () => {
 
   return (
     <Layout>
+      <Toaster
+        toastOptions={{
+          success: {
+            style: {
+              background: "green",
+            },
+          },
+          error: {
+            style: {
+              background: "red",
+            },
+          },
+        }}
+        position="top-right"
+        reverseOrder={false}
+      />
       <div className="p-4">
-        <div className="text-2xl font-semibold mb-4">View Cylinder</div>
+        <div className="text-2xl font-semibold mb-4">View Tara Cylinder</div>
         <div className="mb-4">
           <div className="card bg-white shadow-md rounded-lg p-4">
             <form id="addIndiv" autoComplete="off" onSubmit={onSubmit}>
@@ -160,6 +222,7 @@ const ViewCylinder = () => {
                     // }}
                     onChange={(e) => {
                       setLatestid(e.target.value);
+                      setLatestidone(e.target.value);
                     }}
                     onBlur={(e) => {
                       checkBarcode(e.target.value);
@@ -187,79 +250,71 @@ const ViewCylinder = () => {
               <div className="space-y-4">
                 {cylinders.length > 0
                   ? cylinders.map((cylinder) => (
-                      <div
-                        key={cylinder.cylinder_sub_barcode}
-                        className="p-4 border border-gray-200 rounded-lg"
-                      >
-                        <div className="flex flex-wrap mb-4">
-                          <div className="w-full md:w-1/2 mb-2 md:mb-0 flex items-center">
-                            <FaIndustry className="mr-2" />
-                            <span className="font-bold">Vendor:</span>{" "}
-                            <span>{cylinder.vendor_name}</span>
+                      <>
+                        <div
+                          key={cylinder.cylinder_sub_barcode}
+                          className="px-4  rounded-lg"
+                        >
+                          <table className="w-full border border-gray-300 mb-4">
+                            <tbody>
+                              <tr className="border-b border-gray-200">
+                                <td className="p-2 font-semibold">
+                                  LCPL Serial No
+                                </td>
+                                <td className="p-2">:</td>
+                                <td className="p-2 font-semibold">
+                                  {cylinder.cylinder_sub_barcode}
+                                </td>
+                                <td className="p-2 font-semibold">
+                                  Cylinder No
+                                </td>
+                                <td className="p-2">:</td>
+                                <td className="p-2 font-semibold">
+                                  {cylinder.cylinder_sub_company_no}
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                        <div className="grid grid-cols-3 gap-4 m-4">
+                          <div>
+                            <TextField
+                              label="Tare Weight"
+                              name="cylinder_sub_weight"
+                              inputProps={{
+                                maxLength: 5,
+                                pattern: "[0-9]*\\.?[0-9]*",
+                              }}
+                              value={subWeightData.cylinder_sub_weight}
+                              onChange={handleChange}
+                              fullWidth
+                              variant="outlined"
+                            />
                           </div>
-                          <div className="w-full md:w-1/4 mb-2 md:mb-0 flex items-center">
-                            <FaWeightHanging className="mr-2" />
-                            <span className="font-bold">Weight:</span>{" "}
-                            <span>{cylinder.cylinder_sub_weight}</span>
+
+                          <div>
+                            <TextField
+                              label="New Tare Weight(Kg)"
+                              name="cylinder_sub_n_weight"
+                              value={subWeightData.cylinder_sub_n_weight}
+                              onChange={handleChange}
+                              fullWidth
+                              variant="outlined"
+                            />
                           </div>
-                          <div className="w-full md:w-1/4 flex items-center">
-                            <FaRegCalendarAlt className="mr-2" />
-                            <span className="font-bold">Date:</span>{" "}
-                            <span>
-                              {Moment(cylinder.cylinder_date).format(
-                                "DD-MM-YYYY"
-                              )}
-                            </span>
+
+                          <div className="w-full md:w-1/3 mb-4">
+                            <Button
+                              type="button"
+                              className="bg-blue-200 text-white p-4 rounded"
+                              color="primary"
+                              onClick={() => onSubmit1()}
+                            >
+                              {loadingtara ? "Updatting..." : "Update"}
+                            </Button>
                           </div>
                         </div>
-                        <table className="w-full border border-gray-300 mb-4">
-                          <tbody>
-                            <tr className="border-b border-gray-200">
-                              <td className="p-2 font-semibold">
-                                LCPL Serial No
-                              </td>
-                              <td className="p-2">:</td>
-                              <td className="p-2 font-semibold">
-                                {cylinder.cylinder_sub_barcode}
-                              </td>
-                              <td className="p-2 font-semibold">Batch No</td>
-                              <td className="p-2">:</td>
-                              <td className="p-2 font-semibold">
-                                {cylinder.cylinder_sub_batch_no}
-                              </td>
-                            </tr>
-                            <tr className="border-b border-gray-200">
-                              <td className="p-2 font-semibold">Cylinder No</td>
-                              <td className="p-2">:</td>
-                              <td className="p-2 font-semibold">
-                                {cylinder.cylinder_sub_company_no}
-                              </td>
-                              <td className="p-2 font-semibold">Month/Year</td>
-                              <td className="p-2">:</td>
-                              <td className="p-2 font-semibold">
-                                {cylinder.cylinder_sub_manufacturer_month}/
-                                {cylinder.cylinder_sub_manufacturer_year}
-                              </td>
-                            </tr>
-                            <tr>
-                              <td className="p-2 font-semibold">
-                                Manufacturer
-                              </td>
-                              <td className="p-2">:</td>
-                              <td className="p-2 font-semibold">
-                                {cylinder.manufacturer_name}
-                              </td>
-                              <td className="p-2 font-semibold">
-                                LCPL Batch No
-                              </td>
-                              <td className="p-2">:</td>
-                              <td className="p-2 font-semibold">
-                                {cylinder.cylinder_batch_nos}
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
+                      </>
                     ))
                   : ""}
               </div>
@@ -285,4 +340,4 @@ const ViewCylinder = () => {
   );
 };
 
-export default ViewCylinder;
+export default ViewTaraWeight;

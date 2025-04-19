@@ -95,11 +95,12 @@ const EditManufacturer = () => {
           },
         }
       );
+
       if (response.data.code == "200") {
-        toast.success("Manufacture Edited Succesfully");
+        toast.success(response.data.msg || "Updated Sucessfully");
         navigate("/manufacturer");
       } else {
-        toast.error("error");
+        toast.error(response.data.msg || "Error Occurs");
       }
     } catch (error) {
       console.error("Error creating maufacturer", error);
