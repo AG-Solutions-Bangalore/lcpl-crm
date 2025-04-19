@@ -11,8 +11,7 @@ import Layout from "../../layout/Layout";
 import BASE_URL from "../../base/BaseUrl";
 import axios from "axios";
 import { ContextPanel } from "../../utils/ContextPanel";
-import { toast } from "react-toastify";
-
+import toast from "react-hot-toast";
 
 const CylinderEdit = () => {
   const { id } = useParams(); // Get the main cylinder ID from URL params
@@ -191,6 +190,7 @@ const CylinderEdit = () => {
             subCylinder.cylinder_sub_manufacturer_year,
           cylinder_sub_batch_no: subCylinder.cylinder_sub_batch_no,
           cylinder_sub_weight: subCylinder.cylinder_sub_weight,
+          cylinder_sub_n_weight: subCylinder.cylinder_sub_n_weight,
         };
       } else if (branchId === "2" && userTypeId === "2") {
         dataSubCyl = {
@@ -233,7 +233,11 @@ const CylinderEdit = () => {
           },
         }
       );
-      toast.success("Update Successfull")
+      if (response.data.code == "200") {
+        toast.success(response.data.msg || "Updated Sucessfully");
+      } else {
+        toast.error(response.data.msg || "Error Occurs");
+      }
       navigate(`/cylinder-view/${localStorage.getItem("viewedCylinderId")}`);
     } catch (error) {
       console.error("Error updating the cylinder data", error);
@@ -274,10 +278,9 @@ const CylinderEdit = () => {
     if (e.key === "." && e.target.value.includes(".")) {
       e.preventDefault();
     }
-  } 
+  };
   return (
     <Layout>
-      
       <div className="p-4 sm:p-6">
         <div className="mb-6">
           <h3 className="text-xl sm:text-2xl font-bold">
@@ -286,7 +289,7 @@ const CylinderEdit = () => {
         </div>
 
         <form
-        id="addIndiv"
+          id="addIndiv"
           onSubmit={handleSubmit}
           className="bg-white p-6 shadow rounded-md"
         >
@@ -370,6 +373,15 @@ const CylinderEdit = () => {
               inputProps={{ maxLength: 5, pattern: "[0-9]*\\.?[0-9]*" }}
               value={subCylinder.cylinder_sub_weight}
               onKeyDown={handleTareDown}
+              onChange={handleChange}
+              fullWidth
+              variant="outlined"
+            />
+
+            <TextField
+              label="New Tare Weight(Kg)"
+              name="cylinder_sub_n_weight"
+              value={subCylinder.cylinder_sub_n_weight}
               onChange={handleChange}
               fullWidth
               variant="outlined"
@@ -543,14 +555,7 @@ const CylinderEdit = () => {
                     </MenuItem>
                   ))}
                 </TextField>
-                <TextField
-                  label="New Tare Weight(Kg)"
-                  name="cylinder_sub_n_weight"
-                  value={subCylinder.cylinder_sub_n_weight}
-                  onChange={handleChange}
-                  fullWidth
-                  variant="outlined"
-                />
+
                 <TextField
                   // yes no
                   select

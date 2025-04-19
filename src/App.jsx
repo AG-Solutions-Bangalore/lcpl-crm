@@ -7,12 +7,15 @@ import EditVendor from "./pages/master/vendor/EditVendor";
 import CylinderEdit from "./pages/cylinder/CylinderEdit";
 import { lazy, Suspense, useContext, useEffect, useState } from "react";
 import { ContextPanel } from "./utils/ContextPanel";
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+// import { ToastContainer } from "react-toastify";
+// import "react-toastify/dist/ReactToastify.css";
 import Loader from "./components/Loader";
 import ReportForm from "./pages/reports/report/ReportForm";
 import ReportOne from "./pages/reports/report/ReportOne";
 import ReportTwo from "./pages/reports/report/ReportTwo";
+import ViewTaraWeight from "./pages/ViewTaraWeight/ViewTaraWeight";
+import { Toaster } from "react-hot-toast";
+import DisableRightClick from "./components/DisableRightClick";
 
 // lazy
 const SIgnUp = lazy(() => import("./pages/auth/SIgnUp"));
@@ -62,13 +65,25 @@ const App = () => {
     setIsLoading(false);
   }, [setUserInfo]);
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <>
-    <ToastContainer />
+      <Toaster
+        toastOptions={{
+          success: {
+            style: {
+              background: "green",
+            },
+          },
+          error: {
+            style: {
+              background: "red",
+            },
+          },
+        }}
+        position="top-right"
+        reverseOrder={false}
+      />
+      {/* <DisableRightClick /> */}
       <Routes>
         <Route path="/" element={<SignIn />} />
         <Route
@@ -182,6 +197,14 @@ const App = () => {
                     element={
                       <Suspense fallback={<Loader />}>
                         <ViewCylinder />
+                      </Suspense>
+                    }
+                  />
+                  <Route
+                    path="/view-tara-weight"
+                    element={
+                      <Suspense fallback={<Loader />}>
+                        <ViewTaraWeight />
                       </Suspense>
                     }
                   />

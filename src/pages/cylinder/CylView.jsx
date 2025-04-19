@@ -9,8 +9,8 @@ import { ContextPanel } from "../../utils/ContextPanel";
 import axios from "axios";
 import BASE_URL from "../../base/BaseUrl";
 import MUIDataTable from "mui-datatables";
-import { toast } from "react-toastify";
 import { IoReturnDownBack } from "react-icons/io5";
+import toast from "react-hot-toast";
 
 const CylView = () => {
   const { id } = useParams();
@@ -220,7 +220,7 @@ const CylView = () => {
       <div className="p-4 sm:p-6">
         <div className="mb-6 flex  items-center justify-between gap-4">
           <h3 className="text-xl border-b-2 border-dashed border-blue-900 sm:text-2xl font-bold">
-            View Cylinder
+            View Cylinder 
           </h3>
           <Link to="/cylinder">
             <button className="w-20 h-10  border border-red-500 hover:border-blue-500 bg-blue-400 hover:bg-red-100  p-1 rounded-lg text-white hover:text-red-700">
