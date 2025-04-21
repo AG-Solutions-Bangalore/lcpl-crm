@@ -88,7 +88,7 @@ const AppProvider = ({ children }) => {
       "/report-cylinder",
       "/view-cylinder",
       "/user-view-cylinder",
-      "/view-tara-weight",
+      "/view-tare-weight",
     ];
 
     const isPublicPath = ["/", "/register", "/forget-password"].includes(
@@ -108,22 +108,22 @@ const AppProvider = ({ children }) => {
 
     // User is logged in
     if (isAllowedPath) return;
+    if (!hasRedirected.current) {
+      const { branchId, userTypeId } = userInfo;
 
-    if (
-      (userInfo.branchId === 1 || userInfo.branchId === 2) &&
-      userInfo.userTypeId === 1
-    ) {
-      hasRedirected.current = true;
-      navigate("/user-view-cylinder");
-    } else if (
-      (userInfo.branchId === 1 || userInfo.branchId === 2) &&
-      userInfo.userTypeId === 2
-    ) {
-      hasRedirected.current = true;
-      navigate("/cylinder");
-    } else {
-      hasRedirected.current = true;
-      navigate("/");
+      if ((branchId === 1 || branchId === 2) && userTypeId === 1) {
+        hasRedirected.current = true;
+        navigate("/user-view-cylinder");
+      } else if ((branchId === 1 || branchId === 2) && userTypeId === 2) {
+        hasRedirected.current = true;
+        navigate("/cylinder");
+      } else if ((branchId === 1 || branchId === 2) && userTypeId == 3) {
+        hasRedirected.current = true;
+        navigate("/view-tare-weight");
+      } else {
+        hasRedirected.current = true;
+        navigate("/");
+      }
     }
   }, [error, isPanelUp, location.pathname, userInfo, navigate]);
 

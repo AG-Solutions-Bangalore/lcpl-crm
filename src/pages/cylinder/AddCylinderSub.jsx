@@ -11,6 +11,7 @@ import { IoIosQrScanner } from "react-icons/io";
 import { Dialog, DialogBody, DialogFooter } from "@material-tailwind/react";
 import ScannerModel from "../../components/ScannerModel";
 import Select from "react-select";
+import { QrCodeIcon } from "lucide-react";
 
 const month = [
   {
@@ -401,15 +402,11 @@ const AddCylinderSub = () => {
 
               <>
                 <div className=" flex mb-4">
-                  {branchId === "1" ? (
-                    <IoIosQrScanner
-                      className="mdi mdi-barcode-scan w-6 hover:text-red-500 h-12 mdi-48px menu-icon"
-                      style={{ cursor: "pointer", marginRight: "1rem" }}
-                      onClick={openmodal}
-                    ></IoIosQrScanner>
-                  ) : (
-                    ""
-                  )}
+                  <QrCodeIcon
+                    className="mdi mdi-barcode-scan w-6 hover:text-red-500 h-12 mdi-48px menu-icon"
+                    style={{ cursor: "pointer", marginRight: "1rem" }}
+                    onClick={openmodal}
+                  ></QrCodeIcon>
                   <TextField
                     id="select-corrpreffer"
                     required
@@ -554,7 +551,8 @@ const AddCylinderSub = () => {
             <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-4 mt-4">
               <Button
                 type="submit"
-                className="flex items-center bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 w-full md:w-auto"
+                variant="contained"
+                className="flex items-center justify-center gap-2 rounded-md px-5 py-2 font-medium text-black bg-gradient-to-br from-blue-400 to-blue-700 hover:from-blue-500 hover:to-blue-800 transition-all w-full md:w-auto disabled:opacity-60 disabled:cursor-not-allowed "
                 onClick={onSubmitNext}
                 disabled={loading}
               >
@@ -567,27 +565,30 @@ const AddCylinderSub = () => {
                   </>
                 )}
               </Button>
-              <Button
-                type="submit"
-                className="flex items-center bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 w-full md:w-auto"
-                onClick={onSubmit}
-                disabled={loading}
-              >
-                {loading ? (
-                  "Finishing..."
-                ) : (
-                  <>
-                    <FaCheck className="mr-2" />
-                    Finish
-                  </>
-                )}
-              </Button>
-              <Link to="/cylinder">
-                <Button className="flex items-center bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400 w-full md:w-auto">
-                  <FaTimes className="mr-2" />
-                  Cancel
+              <div className="flex flex-row items-center gap-3">
+                <Button
+                  type="submit"
+                  onClick={onSubmit}
+                  disabled={loading}
+                  className="flex items-center justify-center gap-2 rounded-md px-5 py-2 font-medium text-white bg-green-500 hover:bg-green-600 transition-all w-full md:w-auto disabled:opacity-60 disabled:cursor-not-allowed"
+                >
+                  {loading ? (
+                    "Finishing..."
+                  ) : (
+                    <>
+                      <FaCheck className="h-4 w-4" />
+                      Finish
+                    </>
+                  )}
                 </Button>
-              </Link>
+
+                <Link to="/cylinder" className="w-full md:w-auto">
+                  <Button className="flex items-center justify-center gap-2 rounded-md px-5 py-2 font-medium text-gray-700 bg-gray-300 hover:bg-gray-400 transition-all w-full md:w-auto">
+                    <FaTimes className="h-4 w-4" />
+                    Cancel
+                  </Button>
+                </Link>
+              </div>
             </div>
           </form>
         </div>

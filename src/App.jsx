@@ -13,12 +13,14 @@ import Loader from "./components/Loader";
 import ReportForm from "./pages/reports/report/ReportForm";
 import ReportOne from "./pages/reports/report/ReportOne";
 import ReportTwo from "./pages/reports/report/ReportTwo";
-import ViewTaraWeight from "./pages/ViewTaraWeight/ViewTaraWeight";
 import { Toaster } from "react-hot-toast";
 import DisableRightClick from "./components/DisableRightClick";
 
 // lazy
 const SIgnUp = lazy(() => import("./pages/auth/SIgnUp"));
+const ViewTaraWeight = lazy(() =>
+  import("./pages/ViewTaraWeight/ViewTaraWeight")
+);
 const ForgetPassword = lazy(() => import("./pages/auth/ForgetPassword"));
 const ChangePassword = lazy(() => import("./pages/profile/ChangePassword"));
 const Vendor = lazy(() => import("./pages/master/vendor/Vendor"));
@@ -83,7 +85,7 @@ const App = () => {
         position="top-right"
         reverseOrder={false}
       />
-      <DisableRightClick />
+      {/* <DisableRightClick /> */}
       <Routes>
         <Route path="/" element={<SignIn />} />
         <Route
@@ -200,14 +202,7 @@ const App = () => {
                       </Suspense>
                     }
                   />
-                  <Route
-                    path="/view-tara-weight"
-                    element={
-                      <Suspense fallback={<Loader />}>
-                        <ViewTaraWeight />
-                      </Suspense>
-                    }
-                  />
+
                   <Route
                     path="/vendor-report"
                     element={
@@ -250,8 +245,25 @@ const App = () => {
                 <Route
                   path="/user-view-cylinder"
                   element={
-                    <Suspense fallback={"Loading..."}>
+                    <Suspense fallback={<Loader />}>
                       <UserViewCylinder />
+                    </Suspense>
+                  }
+                />
+              )}
+          </>
+        )}
+        {userInfo.branchId && userInfo.userTypeId && (
+          <>
+            {(userInfo.branchId === 1 || userInfo.branchId === 2) &&
+              userInfo.userTypeId === 3 && (
+                // <Route path="/view-tare-weight" element={<ViewTaraWeight />} />
+
+                <Route
+                  path="/view-tare-weight"
+                  element={
+                    <Suspense fallback={<Loader />}>
+                      <ViewTaraWeight />
                     </Suspense>
                   }
                 />
