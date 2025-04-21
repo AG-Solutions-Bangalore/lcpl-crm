@@ -212,7 +212,7 @@ const ViewTaraWeight = () => {
       />
       <Navbar />
       <div className="p-4">
-        <div className="text-2xl font-semibold mb-4">View Tara Cylinder</div>
+        <div className="text-2xl font-semibold mb-4">View Tare Cylinder</div>
         <div className="mb-4">
           <div className="card bg-white shadow-md rounded-lg p-4">
             <form id="addIndiv" autoComplete="off" onSubmit={onSubmit}>
@@ -260,14 +260,14 @@ const ViewTaraWeight = () => {
                     {loading ? "Loading..." : "Submit"}
                   </Button>
 
-                  <Button
+                  {/* <Button
                     type="button"
                     className="bg-blue-200 text-white p-4 rounded"
                     color="primary"
                     onClick={handleLogout}
                   >
                     Logout
-                  </Button>
+                  </Button> */}
                 </div>
               </div>
             </form>
@@ -281,7 +281,7 @@ const ViewTaraWeight = () => {
                   ? cylinders.map((cylinder) => (
                       <div
                         key={cylinder.cylinder_sub_barcode}
-                        className=" p-6 rounded-lg  mb-6 flex flex-col space-y-4"
+                        className=" rounded-lg  mb-6 flex flex-col space-y-4"
                       >
                         <div className="flex justify-between items-center">
                           <div className="font-semibold text-xl">

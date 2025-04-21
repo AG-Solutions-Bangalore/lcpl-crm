@@ -46,62 +46,119 @@ const Cylinder = () => {
 
   const columns = [
     {
-      name: "slNo",
-      label: "SL No",
+      name: "vendor_name",
+      label: <span className="text-[10px] md:text-[12px]">Vendor</span>,
+
       options: {
-        filter: false,
+        filter: true,
         sort: false,
         customBodyRender: (value, tableMeta) => {
-          return tableMeta.rowIndex + 1;
+          return (
+            <span className="font-semibold text-slate-800 text-[10px] md:text-[12px]">
+              {value}
+            </span>
+          );
         },
       },
     },
-    {
-      name: "vendor_name",
-      label: "Vendor",
-      options: {
-        filter: true,
-        sort: true,
-      },
-    },
+
     {
       name: "cylinder_count",
-      label: "Cyl Count",
+      label: <span className="text-[10px] md:text-[12px]">Cyl Count</span>,
+
       options: {
         filter: true,
         sort: false,
-      },
-    },
-    {
-      name: "cylinder_status",
-      label: "Status",
-      options: {
-        filter: true,
-        sort: false,
+        customBodyRender: (value, tableMeta) => {
+          const cylinderQnty = tableMeta.rowData[3];
+          const cylinderSize = tableMeta.rowData[4];
+
+          return (
+            <div className="flex flex-col p-0">
+              <span className="font-semibold text-slate-800 text-[10px] md:text-[12px]">
+                {value}
+              </span>
+              <span className="text-slate-500 text-[10px] md:text-[12px] w-[3rem]">
+                {" "}
+                Qty: {cylinderQnty}
+              </span>
+              <span className="text-slate-500 text-[10px] md:text-[12px]">
+                {" "}
+                Size: {cylinderSize}
+              </span>
+            </div>
+          );
+        },
       },
     },
     {
       name: "cylinder_batch_nos",
-      label: "LCPL Batch no",
+      label: <span className="text-[10px] md:text-[12px]">LCPL Batch no</span>,
       options: {
         filter: true,
         sort: false,
+        customBodyRender: (value, tableMeta) => {
+          const serialNoFrom = tableMeta.rowData[5];
+
+          const serialNoTo = tableMeta.rowData[6];
+          return (
+            <div className="flex flex-col">
+              <span className="font-semibold text-slate-800 text-[10px] md:text-[12px]">
+                {value}
+              </span>
+              <span className="text-slate-500 text-[10px] md:text-[12px]">
+                {" "}
+                From: {serialNoFrom}
+              </span>
+              <span className="text-slate-500 text-[10px] md:text-[12px]">
+                To: {serialNoTo}
+              </span>
+            </div>
+          );
+        },
+      },
+    },
+
+    {
+      name: "cylinder_qnty",
+      label: "Quantity",
+      options: {
+        filter: true,
+        sort: false,
+        display: false,
       },
     },
     {
-      name: "cylinder_date",
-      label: "Date",
+      name: "cylinder_size",
+      label: "Size",
       options: {
         filter: true,
-        sort: true,
-        customBodyRender: (value) => {
-          return Moment(value).format("DD-MM-YYYY");
-        },
+        sort: false,
+        display: false,
+      },
+    },
+    {
+      name: "cylinder_serial_from_no",
+      label: "From",
+      options: {
+        filter: true,
+        sort: false,
+        display: false,
+      },
+    },
+    {
+      name: "cylinder_serial_to_no",
+      label: "To",
+      options: {
+        filter: true,
+        sort: false,
+        display: false,
       },
     },
     {
       name: "id",
-      label: "Action",
+      label: <span className="text-[10px] md:text-[12px]">Action</span>,
+
       options: {
         filter: false,
         sort: false,
@@ -136,12 +193,15 @@ const Cylinder = () => {
     viewColumns: false,
     download: false,
     print: false,
+    state: {
+      isLoading: loading,
+    },
   };
   return (
     <Layout>
       <div className="flex flex-col md:flex-row justify-between items-center bg-white mt-5 p-2 rounded-lg space-y-4 md:space-y-0">
         <h3 className="text-center md:text-left text-lg md:text-xl font-bold">
-          Cylinder List 
+          Cylinder List
         </h3>
 
         <Link
