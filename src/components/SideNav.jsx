@@ -22,6 +22,7 @@ const SideNav = ({ openSideNav, setOpenSideNav }) => {
   // Hardcoded sidenavType to "dark"
   const sidenavType = "dark";
   const branchId = localStorage.getItem("branchId");
+  const userTypeId = localStorage.getItem("userTypeId");
   const sidenavTypes = {
     dark: "bg-gradient-to-br from-blue-300 to-blue-900 shadow-lg shadow-blue-900",
     white: "bg-white shadow-sm",
@@ -156,26 +157,6 @@ const SideNav = ({ openSideNav, setOpenSideNav }) => {
             </NavLink>
           </li>
 
-          <li>
-            <NavLink to="/view-tara-weight">
-              {({ isActive }) => (
-                <Button
-                  variant={isActive ? "gradient" : "text"}
-                  color="white"
-                  className="flex items-center gap-4 px-4 capitalize"
-                  fullWidth
-                >
-                  <MdOutlineViewInAr className="w-5 h-5 text-inherit" />
-                  <Typography
-                    color="inherit"
-                    className="font-medium capitalize"
-                  >
-                    Tara Weight
-                  </Typography>
-                </Button>
-              )}
-            </NavLink>
-          </li>
           <hr />
           {branchId == "2" ? (
             ""
@@ -271,6 +252,31 @@ const SideNav = ({ openSideNav, setOpenSideNav }) => {
                 </NavLink>
               </li>
             </>
+          )}
+
+          {userTypeId == "3" ? (
+            <li>
+              <NavLink to="/view-tara-weight">
+                {({ isActive }) => (
+                  <Button
+                    variant={isActive ? "gradient" : "text"}
+                    color="white"
+                    className="flex items-center gap-4 px-4 capitalize"
+                    fullWidth
+                  >
+                    <MdOutlineViewInAr className="w-5 h-5 text-inherit" />
+                    <Typography
+                      color="inherit"
+                      className="font-medium capitalize"
+                    >
+                      Tara Weight
+                    </Typography>
+                  </Button>
+                )}
+              </NavLink>
+            </li>
+          ) : (
+            ""
           )}
         </ul>
       </div>

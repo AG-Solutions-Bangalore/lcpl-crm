@@ -12,6 +12,7 @@ import { Dialog, DialogBody, DialogFooter } from "@material-tailwind/react";
 import ScannerModel from "../../components/ScannerModel";
 import { QrCodeIcon } from "lucide-react";
 import toast, { Toaster } from "react-hot-toast";
+import Navbar from "../../components/Navbar";
 
 const ViewTaraWeight = () => {
   const [latestid, setLatestid] = useState("");
@@ -21,7 +22,7 @@ const ViewTaraWeight = () => {
     cylinder_sub_weight: "",
     cylinder_sub_n_weight: "",
   });
-
+  console.log(latestidone, "latestidone");
   const [message, setMessage] = useState("");
   const testRef = useRef(null);
   const componentRef = useRef(null);
@@ -42,7 +43,6 @@ const ViewTaraWeight = () => {
   const closegroupModal = () => {
     console.log("Closing modal");
     setShowmodal(false);
-    // window.location.reload();
   };
 
   const openmodal = () => {
@@ -53,7 +53,7 @@ const ViewTaraWeight = () => {
   const barcodeScannerValue = (value) => {
     console.log("Barcode scanned:", value);
     setShowmodal(false);
-    // setId(value);
+    setId(value);
     checkBarcode(value);
   };
 
@@ -70,6 +70,12 @@ const ViewTaraWeight = () => {
         }
       );
       setCylinders(response.data.cylinderSub);
+      const data = response?.data?.cylinderSub[0];
+      setSubWeightData({
+        cylinder_sub_weight: data?.cylinder_sub_weight,
+        cylinder_sub_n_weight: data?.cylinder_sub_n_weight,
+      });
+      console.log("aa");
     };
     if (id) {
       fetchData();
@@ -84,10 +90,13 @@ const ViewTaraWeight = () => {
         navigate("/maintenance");
         return;
       }
+
+      const scannedId = testRef.current?.value || latestid;
+
       setLoading(true);
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        `${BASE_URL}/api/web-fetch-cylinder-by-scan/${latestid}`,
+        `${BASE_URL}/api/web-fetch-cylinder-by-scan/${scannedId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -100,9 +109,14 @@ const ViewTaraWeight = () => {
         setCylinders([]);
       } else {
         setCylinders(response.data.cylinderSub);
+        const data = response?.data?.cylinderSub[0];
+        setSubWeightData({
+          cylinder_sub_weight: data?.cylinder_sub_weight,
+          cylinder_sub_n_weight: data?.cylinder_sub_n_weight,
+        });
         setMessage("");
       }
-    //   testRef.current.focus();
+
       setLatestid("");
     } catch (error) {
       console.error("Error fetching viewcylinder data", error);
@@ -111,6 +125,7 @@ const ViewTaraWeight = () => {
       setLoading(false);
     }
   };
+
   const onSubmit1 = async () => {
     try {
       setLoadingTara(true);
@@ -159,23 +174,26 @@ const ViewTaraWeight = () => {
         setMessage("No cylinders found for the given ID.");
         setCylinders([]);
       } else {
-        const data = response.data.cylinderSub[0];
-        setCylinders(response.data.cylinderSub);
+        const data = response?.data?.cylinderSub[0];
+        setCylinders(response.data?.cylinderSub);
         setSubWeightData({
-          cylinder_sub_weight: data.cylinder_sub_weight,
-          cylinder_sub_n_weight: data.cylinder_sub_n_weight,
+          cylinder_sub_weight: data?.cylinder_sub_weight,
+          cylinder_sub_n_weight: data?.cylinder_sub_n_weight,
         });
         setMessage("");
       }
-    //   testRef.current.focus();
+      //   testRef.current.focus();
       setLatestid("");
     } else {
       setMessage("Barcode Length must be 4 to 6");
     }
   };
-
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/");
+  };
   return (
-    <Layout>
+    <>
       <Toaster
         toastOptions={{
           success: {
@@ -192,6 +210,7 @@ const ViewTaraWeight = () => {
         position="top-right"
         reverseOrder={false}
       />
+      <Navbar />
       <div className="p-4">
         <div className="text-2xl font-semibold mb-4">View Tara Cylinder</div>
         <div className="mb-4">
@@ -231,7 +250,7 @@ const ViewTaraWeight = () => {
                     variant="outlined"
                   />
                 </div>
-                <div className="w-full md:w-1/3 mb-4">
+                <div className="w-full md:w-1/3 mb-4 flex">
                   <Button
                     type="submit"
                     className="bg-blue-200 text-white p-4 rounded"
@@ -240,43 +259,46 @@ const ViewTaraWeight = () => {
                   >
                     {loading ? "Loading..." : "Submit"}
                   </Button>
+
+                  <Button
+                    type="button"
+                    className="bg-blue-200 text-white p-4 rounded"
+                    color="primary"
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </Button>
                 </div>
               </div>
             </form>
             {message && (
               <div className="text-red-500 font-semibold mb-4">{message}</div>
             )}
+
             <div className="mt-4" ref={componentRef}>
               <div className="space-y-4">
                 {cylinders.length > 0
                   ? cylinders.map((cylinder) => (
-                      <>
-                        <div
-                          key={cylinder.cylinder_sub_barcode}
-                          className="px-4  rounded-lg"
-                        >
-                          <table className="w-full border border-gray-300 mb-4">
-                            <tbody>
-                              <tr className="border-b border-gray-200">
-                                <td className="p-2 font-semibold">
-                                  LCPL Serial No
-                                </td>
-                                <td className="p-2">:</td>
-                                <td className="p-2 font-semibold">
-                                  {cylinder.cylinder_sub_barcode}
-                                </td>
-                                <td className="p-2 font-semibold">
-                                  Cylinder No
-                                </td>
-                                <td className="p-2">:</td>
-                                <td className="p-2 font-semibold">
-                                  {cylinder.cylinder_sub_company_no}
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
+                      <div
+                        key={cylinder.cylinder_sub_barcode}
+                        className=" p-6 rounded-lg  mb-6 flex flex-col space-y-4"
+                      >
+                        <div className="flex justify-between items-center">
+                          <div className="font-semibold text-xl">
+                            LCPL Serial No:{" "}
+                            <span className="font-normal">
+                              {cylinder.cylinder_sub_barcode}
+                            </span>
+                          </div>
+                          <div className="font-semibold text-xl">
+                            Cylinder No:{" "}
+                            <span className="font-normal">
+                              {cylinder.cylinder_sub_company_no}
+                            </span>
+                          </div>
                         </div>
-                        <div className="grid grid-cols-3 gap-4 m-4">
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                           <div>
                             <TextField
                               label="Tare Weight"
@@ -302,19 +324,19 @@ const ViewTaraWeight = () => {
                               variant="outlined"
                             />
                           </div>
-
-                          <div className="w-full md:w-1/3 mb-4">
-                            <Button
-                              type="button"
-                              className="bg-blue-200 text-white p-4 rounded"
-                              color="primary"
-                              onClick={() => onSubmit1()}
-                            >
-                              {loadingtara ? "Updatting..." : "Update"}
-                            </Button>
-                          </div>
                         </div>
-                      </>
+
+                        <div className="flex justify-end">
+                          <Button
+                            type="button"
+                            className="bg-blue-500 text-white px-6 py-2 rounded-lg"
+                            color="primary"
+                            onClick={() => onSubmit1()}
+                          >
+                            {loadingtara ? "Updating..." : "Update"}
+                          </Button>
+                        </div>
+                      </div>
                     ))
                   : ""}
               </div>
@@ -336,7 +358,7 @@ const ViewTaraWeight = () => {
           </button>
         </DialogFooter>
       </Dialog>
-    </Layout>
+    </>
   );
 };
 

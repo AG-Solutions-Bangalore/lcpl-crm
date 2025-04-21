@@ -6,8 +6,8 @@ import { ContextPanel } from "../../utils/ContextPanel";
 import toast, { Toaster } from "react-hot-toast";
 
 const SignIn = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("98765432106");
+  const [password, setPassword] = useState("123456");
   const [loading, setLoading] = useState(false);
   const { isPanelUp, setUserInfo } = useContext(ContextPanel);
   const navigate = useNavigate();
@@ -30,7 +30,7 @@ const SignIn = () => {
       // Send POST request to login API with form data
       const res = await axios.post(`${BASE_URL}/api/web-login`, formData);
 
-      if (res.status === 200) {
+      if (res.status == 200) {
         const { token, user } = res.data.UserInfo;
         if (token) {
           localStorage.setItem("token", token);
@@ -43,6 +43,11 @@ const SignIn = () => {
           });
 
           if (
+            (user.branch_id === 1 || user.branch_id === 2) &&
+            user.user_type_id == 3
+          ) {
+            navigate("/view-tare-weight");
+          } else if (
             (user.branch_id === 1 || user.branch_id === 2) &&
             user.user_type_id === 2
           ) {
